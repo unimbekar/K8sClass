@@ -6,7 +6,7 @@ A comprehensive Terraform configuration that creates a complete IAM foundation f
 
 This configuration establishes a robust IAM architecture centered around the principle of least privilege while providing comprehensive EKS operational capabilities. The setup includes user management, service roles, and fine-grained policies specifically designed for EKS workflows.
 
-![EKS IAM Architecture](./iam/eks_iam_diagram.svg)
+![EKS IAM Architecture](./eks_iam_diagram.svg)
 
 ## 🎯 Key Features
 
