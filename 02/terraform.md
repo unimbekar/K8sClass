@@ -55,7 +55,8 @@ Change (N)ame, (E)mail, or (O)kay/(Q)uit? O
 Once it is created you can export the base64 version of that key with: 
 
 ```
-gpg --export engineering@castlerock.ai | base64 | pbcopy 
+<!-- gpg --export engineering@castlerock.ai | base64 | pbcopy  -->
+gpg --export --armor upender.kumar@gmail.com | base64
 ```
 This can be put inside the [terraform/iam/vars.tf](../terraform/iam/vars.tf) file.
 

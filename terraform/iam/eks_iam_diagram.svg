@@ -1,0 +1,168 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="groupGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7ED321;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5BA715;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="roleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4921A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="policyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#BD10E0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9013B8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f8f9fa" stroke="none"/>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">EKS IAM Architecture</text>
+  
+  <!-- User Section -->
+  <g>
+    <rect x="50" y="80" width="200" height="120" rx="10" fill="url(#userGrad)" filter="url(#shadow)"/>
+    <text x="150" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">IAM User</text>
+    <text x="150" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">eksdude</text>
+    <text x="150" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8f4f8">• Console Access</text>
+    <text x="150" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8f4f8">• API Keys</text>
+    <text x="150" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8f4f8">• Encrypted Credentials</text>
+  </g>
+  
+  <!-- Group Section -->
+  <g>
+    <rect x="350" y="80" width="250" height="120" rx="10" fill="url(#groupGrad)" filter="url(#shadow)"/>
+    <text x="475" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">IAM Group</text>
+    <text x="475" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">EKSDemoGroup</text>
+    <text x="475" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8f4f8">Aggregates all permissions</text>
+    <text x="475" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e8f4f8">for EKS operations</text>
+  </g>
+  
+  <!-- AWS Managed Policies -->
+  <g>
+    <rect x="50" y="250" width="300" height="200" rx="10" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2"/>
+    <text x="200" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#34495e">AWS Managed Policies</text>
+    <text x="60" y="300" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AmazonEC2FullAccess</text>
+    <text x="60" y="320" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AmazonS3FullAccess</text>
+    <text x="60" y="340" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AmazonVPCFullAccess</text>
+    <text x="60" y="360" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AWSCloudFormationFullAccess</text>
+    <text x="60" y="380" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AmazonDynamoDBFullAccess</text>
+    <text x="60" y="400" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• AmazonSNSReadOnlyAccess</text>
+    <text x="60" y="420" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">• IAMReadOnlyAccess</text>
+  </g>
+  
+  <!-- Custom Policies -->
+  <g>
+    <rect x="400" y="250" width="250" height="200" rx="10" fill="url(#policyGrad)" filter="url(#shadow)"/>
+    <text x="525" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Custom Policies</text>
+    
+    <rect x="410" y="290" width="230" height="45" rx="5" fill="rgba(255,255,255,0.2)"/>
+    <text x="525" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">EKSFullAccess</text>
+    <text x="525" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">eks:*, ecr:*</text>
+    
+    <rect x="410" y="345" width="230" height="45" rx="5" fill="rgba(255,255,255,0.2)"/>
+    <text x="525" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">iamPassRole</text>
+    <text x="525" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">IAM role management, OIDC</text>
+    
+    <rect x="410" y="400" width="230" height="35" rx="5" fill="rgba(255,255,255,0.2)"/>
+    <text x="525" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">EKSClusterAutoscaling</text>
+    <text x="525" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">AutoScaling operations</text>
+  </g>
+  
+  <!-- Service Roles -->
+  <g>
+    <rect x="750" y="80" width="400" height="370" rx="10" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
+    <text x="950" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#34495e">Service Roles</text>
+    
+    <!-- EKS Service Role -->
+    <rect x="770" y="120" width="170" height="90" rx="8" fill="url(#roleGrad)" filter="url(#shadow)"/>
+    <text x="855" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">EKSServiceRole</text>
+    <text x="855" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">For EKS Service</text>
+    <text x="855" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• EKSClusterPolicy</text>
+    <text x="855" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• EKSServicePolicy</text>
+    <text x="855" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">Trusted by: eks.amazonaws.com</text>
+    
+    <!-- EKS Dude Role -->
+    <rect x="960" y="120" width="170" height="90" rx="8" fill="url(#roleGrad)" filter="url(#shadow)"/>
+    <text x="1045" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">eks_dude_role</text>
+    <text x="1045" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">For User Operations</text>
+    <text x="1045" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• EC2FullAccess</text>
+    <text x="1045" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• Custom Policies</text>
+    <text x="1045" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">Trusted by: eksdude user</text>
+    
+    <!-- EKS Node Group Role -->
+    <rect x="770" y="230" width="170" height="90" rx="8" fill="url(#roleGrad)" filter="url(#shadow)"/>
+    <text x="855" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">eks_node_group</text>
+    <text x="855" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">For Node Groups</text>
+    <text x="855" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• EKSWorkerNodePolicy</text>
+    <text x="855" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">• EKS_CNI_Policy</text>
+    <text x="855" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">Trusted by: ec2.amazonaws.com</text>
+    
+    <!-- Cross-Role Trust -->
+    <rect x="960" y="230" width="170" height="90" rx="8" fill="#e67e22" filter="url(#shadow)"/>
+    <text x="1045" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Cross-Role Trust</text>
+    <text x="1045" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">eks_node_group can be</text>
+    <text x="1045" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">assumed by eks_dude_role</text>
+    <text x="1045" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f8f9fa">for advanced operations</text>
+    
+    <!-- EKS Cluster Operations -->
+    <rect x="770" y="340" width="360" height="60" rx="8" fill="#27ae60" filter="url(#shadow)"/>
+    <text x="950" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">EKS Cluster Operations</text>
+    <text x="950" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#ecf0f1">Create clusters, manage node groups, autoscaling, OIDC providers</text>
+  </g>
+  
+  <!-- Arrows and Connections -->
+  <!-- User to Group -->
+  <line x1="250" y1="140" x2="350" y2="140" stroke="#2c3e50" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="300" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2c3e50">member of</text>
+  
+  <!-- Group to AWS Policies -->
+  <line x1="400" y1="200" x2="200" y2="250" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Group to Custom Policies -->
+  <line x1="500" y1="200" x2="525" y2="250" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- User to eks_dude_role -->
+  <line x1="250" y1="120" x2="960" y2="150" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="600" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">can assume</text>
+  
+  <!-- Role cross-assumption -->
+  <line x1="960" y1="275" x2="940" y2="275" stroke="#e67e22" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  
+  <!-- Legend -->
+  <g>
+    <rect x="50" y="500" width="550" height="120" rx="10" fill="white" stroke="#bdc3c7" stroke-width="1" filter="url(#shadow)"/>
+    <text x="325" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">Key Features</text>
+    
+    <circle cx="70" cy="545" r="5" fill="#4A90E2"/>
+    <text x="85" y="550" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">User gets console + programmatic access with encrypted credentials</text>
+    
+    <circle cx="70" cy="565" r="5" fill="#7ED321"/>
+    <text x="85" y="570" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">Group centralizes all EKS-related permissions (AWS managed + custom)</text>
+    
+    <circle cx="70" cy="585" r="5" fill="#F5A623"/>
+    <text x="85" y="590" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">Service roles enable EKS cluster creation and node group management</text>
+    
+    <circle cx="70" cy="605" r="5" fill="#BD10E0"/>
+    <text x="85" y="610" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">Custom policies provide fine-grained EKS, ECR, and autoscaling permissions</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="600" y="750" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">Generated from iam.tf - Complete IAM setup for EKS operations</text>
+  <text x="600" y="770" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#95a5a6">Includes user management, service roles, and comprehensive policy attachments</text>
+</svg>

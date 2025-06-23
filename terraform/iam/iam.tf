@@ -8,7 +8,7 @@
 # https://www.terraform.io/docs/providers/aws/index.html
 # select the region you want to perform this operation in. 
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
 }
 
 ########################################################
@@ -130,8 +130,8 @@ data "aws_iam_policy_document" "iamPassRole" {
     ]
     resources = [
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.us-west-2.amazonaws.com",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.us-west-2.amazonaws.com/*",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.us-east-1.amazonaws.com",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.us-east-1.amazonaws.com/*",
       "arn:aws:ssm:*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/opensearchservice.amazonaws.com/AWSServiceRoleForAmazonOpenSearchService",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/*"
