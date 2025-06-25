@@ -4,5 +4,7 @@ terraform {
     bucket = "k8sclass-tf-state-0625"
     key    = "eks/terraform.tfstate"
     profile = "default"
+    # Enable encryption at rest
+    encrypt = true
   }
 }
