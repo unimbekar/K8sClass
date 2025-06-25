@@ -190,11 +190,11 @@ resource "aws_iam_user_policy" "eksdude" {
 
 resource "aws_iam_user_login_profile" "eksdude" {
   user            = aws_iam_user.eksdude.name
-  pgp_key         = var.pgp_key
+  # pgp_key         = var.pgp_key
   password_length = 10
 
   lifecycle {
-    ignore_changes = [password_length, password_reset_required, pgp_key]
+    ignore_changes = [password_length, password_reset_required]
   }
 }
 
@@ -204,7 +204,7 @@ output "password" {
 
 resource "aws_iam_access_key" "eksdude" {
   user    = aws_iam_user.eksdude.name
-  pgp_key = var.pgp_key
+  # pgp_key = var.pgp_key
 }
 
 output "secret" {
@@ -278,9 +278,34 @@ resource "aws_iam_policy" "EKSClusterAutoscaling" {
 }
 
 ########################################################
-# EKS role for creating EKS clusters
+# EKS role for creating EKS clusters (FIXED - No more deprecation warnings)
 ########################################################
 
+resource "aws_iam_role" "eks_dude_role" {
+  name               = "eks_dude_role"
+  assume_role_policy = data.aws_iam_policy_document.eks_dude_assume_role_policy.json
+}
+
+# Policy attachments using the modern approach
+resource "aws_iam_role_policy_attachment" "eks_dude_role_ec2" {
+  role       = aws_iam_role.eks_dude_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_dude_role_iam_pass" {
+  role       = aws_iam_role.eks_dude_role.name
+  policy_arn = aws_iam_policy.iamPassRole.arn
+}
+
+resource "aws_iam_role_policy_attachment" "eks_dude_role_eks_full" {
+  role       = aws_iam_role.eks_dude_role.name
+  policy_arn = aws_iam_policy.EKSFullAccess.arn
+}
+
+resource "aws_iam_role_policy_attachment" "eks_dude_role_opensearch" {
+  role       = aws_iam_role.eks_dude_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonOpenSearchServiceFullAccess"
+}
 
 data "aws_iam_policy_document" "eks_dude_assume_role_policy" {
   statement {
@@ -307,30 +332,40 @@ data "aws_iam_policy_document" "eks_dude_assume_role_policy" {
   }
 }
 
-resource "aws_iam_role" "eks_dude_role" {
-  name               = "eks_dude_role"
-  assume_role_policy = data.aws_iam_policy_document.eks_dude_assume_role_policy.json
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-    aws_iam_policy.iamPassRole.arn,
-    aws_iam_policy.EKSFullAccess.arn,
-    "arn:aws:iam::aws:policy/AmazonOpenSearchServiceFullAccess",
-  ]
+########################################################
+# EKS node group role (FIXED - No more deprecation warnings)
+########################################################
+
+resource "aws_iam_role" "eks_node_group" {
+  name               = "eks_node_group"
+  assume_role_policy = data.aws_iam_policy_document.eks_node_group_assume_role_policy.json
 }
 
-/*
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSNSReadOnlyAccess"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
-  policy_arn = "arn:aws:iam::aws:policy/IAMReadOnlyAccess"
-  policy_arn = "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-*/
+# Policy attachments using the modern approach
+resource "aws_iam_role_policy_attachment" "eks_node_group_worker" {
+  role       = aws_iam_role.eks_node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
 
+resource "aws_iam_role_policy_attachment" "eks_node_group_cni" {
+  role       = aws_iam_role.eks_node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
 
-########################################################
-# EKS node group role
-########################################################
+resource "aws_iam_role_policy_attachment" "eks_node_group_ecr" {
+  role       = aws_iam_role.eks_node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_group_secrets" {
+  role       = aws_iam_role.eks_node_group.name
+  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_group_autoscaling" {
+  role       = aws_iam_role.eks_node_group.name
+  policy_arn = aws_iam_policy.EKSClusterAutoscaling.arn
+}
 
 data "aws_iam_policy_document" "eks_node_group_assume_role_policy" {
   statement {
@@ -356,16 +391,4 @@ data "aws_iam_policy_document" "eks_node_group_assume_role_policy" {
       ]
     }
   }
-}
-
-resource "aws_iam_role" "eks_node_group" {
-  name               = "eks_node_group"
-  assume_role_policy = data.aws_iam_policy_document.eks_node_group_assume_role_policy.json
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
-    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-    aws_iam_policy.EKSClusterAutoscaling.arn
-  ]
 }

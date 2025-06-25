@@ -5,6 +5,10 @@
 *.tfstate
 *.tfstate.*
 
+*.bak
+*pgp*
+*tfplan*
+
 # Crash log files
 crash.log
 crash.*.log
