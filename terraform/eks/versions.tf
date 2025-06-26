@@ -29,7 +29,7 @@ provider "aws" {
   
   # Use IAM role for EKS operations (from IAM Terraform state)
   assume_role {
-    role_arn = data.terraform_remote_state.iam.outputs.eks_dude_role_arn
+    role_arn = data.terraform_remote_state.iam.outputs.iam.eks_dude_role.arn
   }
 
   # Default tags applied to all resources

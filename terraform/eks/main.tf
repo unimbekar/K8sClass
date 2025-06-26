@@ -39,7 +39,7 @@ locals {
   private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets
   public_subnet_ids  = data.terraform_remote_state.vpc.outputs.public_subnets
   
-  # IAM role ARNs from remote state
+  # IAM role ARNs from remote state - UPDATED to match new IAM outputs
   cluster_service_role_arn = data.terraform_remote_state.iam.outputs.eks_service_role_arn
   node_group_role_arn     = data.terraform_remote_state.iam.outputs.eks_node_group_role_arn
   
@@ -210,6 +210,11 @@ resource "aws_cloudwatch_log_group" "eks_cluster_logs" {
     Name = "${var.cluster_name}-cluster-logs"
     Type = "EKS-CloudWatch-LogGroup"
   })
+
+#   depends_on = [
+#     aws_kms_key.eks_logs,
+#     aws_kms_alias.eks_logs
+#   ]
 }
 
 # =================================================================
@@ -321,6 +326,7 @@ resource "aws_launch_template" "eks_nodes" {
     cluster_endpoint    = aws_eks_cluster.cluster.endpoint
     cluster_ca          = aws_eks_cluster.cluster.certificate_authority[0].data
     bootstrap_arguments = var.node_group_bootstrap_arguments
+    environment         = var.environment
   }))
 
   # Block device mapping
@@ -374,11 +380,12 @@ data "aws_ssm_parameter" "eks_ami_release_version" {
 
 # VPC CNI add-on for pod networking
 resource "aws_eks_addon" "vpc_cni" {
-  cluster_name             = aws_eks_cluster.cluster.name
-  addon_name               = "vpc-cni"
-  addon_version            = var.vpc_cni_version
-  resolve_conflicts        = "OVERWRITE"
-  service_account_role_arn = aws_iam_role.vpc_cni_role.arn
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "vpc-cni"
+  addon_version               = var.vpc_cni_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
+  service_account_role_arn    = aws_iam_role.vpc_cni_role.arn
 
   tags = merge(local.common_tags, {
     Name = "${var.cluster_name}-vpc-cni"
@@ -392,10 +399,11 @@ resource "aws_eks_addon" "vpc_cni" {
 
 # CoreDNS add-on for DNS resolution
 resource "aws_eks_addon" "coredns" {
-  cluster_name      = aws_eks_cluster.cluster.name
-  addon_name        = "coredns"
-  addon_version     = var.coredns_version
-  resolve_conflicts = "OVERWRITE"
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "coredns"
+  addon_version               = var.coredns_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
 
   tags = merge(local.common_tags, {
     Name = "${var.cluster_name}-coredns"
@@ -409,11 +417,12 @@ resource "aws_eks_addon" "coredns" {
 
 # EBS CSI driver for persistent volume support
 resource "aws_eks_addon" "ebs_csi_driver" {
-  cluster_name             = aws_eks_cluster.cluster.name
-  addon_name               = "aws-ebs-csi-driver"
-  addon_version            = var.ebs_csi_driver_version
-  resolve_conflicts        = "OVERWRITE"
-  service_account_role_arn = aws_iam_role.ebs_csi_role.arn
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "aws-ebs-csi-driver"
+  addon_version               = var.ebs_csi_driver_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
+  service_account_role_arn    = aws_iam_role.ebs_csi_role.arn
 
   tags = merge(local.common_tags, {
     Name = "${var.cluster_name}-ebs-csi"

@@ -72,7 +72,7 @@ systemctl restart containerd
 /etc/eks/bootstrap.sh \
     $${CLUSTER_NAME} \
     --container-runtime containerd \
-    --kubelet-extra-args "--node-labels=environment=${var.environment},nodegroup-type=main-nodes" \
+    --kubelet-extra-args "--node-labels=environment=${environment},nodegroup-type=main-nodes" \
     $${BOOTSTRAP_ARGUMENTS}
 
 # =================================================================
