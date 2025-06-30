@@ -64,7 +64,15 @@ data "aws_iam_policy_document" "KMSAccess" {
       "kms:UpdateKeyDescription",
       "kms:PutKeyPolicy",
       "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion"
+      "kms:CancelKeyDeletion",
+      "kms:CreateGrant",        # ADDED - Required for EKS
+      "kms:ListGrants",         # ADDED - Good practice
+      "kms:RevokeGrant",        # ADDED - Good practice
+      "kms:RetireGrant",        # ADDED - Good practice
+      "kms:Encrypt",            # ADDED - For EKS operations
+      "kms:Decrypt",            # ADDED - For EKS operations
+      "kms:ReEncrypt*",         # ADDED - For EKS operations
+      "kms:GenerateDataKey*"    # ADDED - For EKS operations
     ]
     resources = ["*"]
   }
@@ -100,7 +108,8 @@ data "aws_iam_policy_document" "CloudWatchLogsAccess" {
       "logs:UntagLogGroup",
       "logs:ListTagsLogGroup",
       "logs:FilterLogEvents",
-      "logs:GetLogEvents"
+      "logs:GetLogEvents",
+      "logs:ListTagsForResource"
     ]
     resources = [
       "arn:aws:logs:*:${data.aws_caller_identity.current.account_id}:*",

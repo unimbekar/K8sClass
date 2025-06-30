@@ -48,11 +48,11 @@ variable "state_bucket" {
 variable "kubernetes_version" {
   description = "Kubernetes version for the EKS cluster"
   type        = string
-  default     = "1.28"
+  default     = "1.29"
   
   validation {
     condition = can(regex("^1\\.(2[4-9]|[3-9][0-9])$", var.kubernetes_version))
-    error_message = "Kubernetes version must be 1.24 or higher (e.g., 1.28, 1.29)."
+    error_message = "Kubernetes version must be 1.24 or higher (e.g., 1.28, 1.29, 1.30)."
   }
 }
 

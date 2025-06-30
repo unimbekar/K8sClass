@@ -204,7 +204,7 @@ resource "aws_eks_cluster" "cluster" {
 resource "aws_cloudwatch_log_group" "eks_cluster_logs" {
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.cloudwatch_log_retention_days
-  kms_key_id        = aws_kms_key.eks_logs.arn
+#   kms_key_id        = aws_kms_key.eks_logs.arn
 
   tags = merge(local.common_tags, {
     Name = "${var.cluster_name}-cluster-logs"
@@ -267,10 +267,7 @@ resource "aws_eks_node_group" "main" {
   subnet_ids = local.private_subnet_ids
 
   # Instance configuration
-  instance_types = var.node_group_instance_types
-  ami_type       = var.node_group_ami_type
   capacity_type  = var.node_group_capacity_type
-  disk_size      = var.node_group_disk_size
 
   # Scaling configuration
   scaling_config {
@@ -382,7 +379,7 @@ data "aws_ssm_parameter" "eks_ami_release_version" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "vpc-cni"
-  addon_version               = var.vpc_cni_version
+#   addon_version               = var.vpc_cni_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   service_account_role_arn    = aws_iam_role.vpc_cni_role.arn
@@ -401,7 +398,7 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_addon" "coredns" {
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "coredns"
-  addon_version               = var.coredns_version
+#   addon_version               = var.coredns_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -419,7 +416,7 @@ resource "aws_eks_addon" "coredns" {
 resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "aws-ebs-csi-driver"
-  addon_version               = var.ebs_csi_driver_version
+#   addon_version               = var.ebs_csi_driver_version
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   service_account_role_arn    = aws_iam_role.ebs_csi_role.arn
@@ -501,7 +498,7 @@ resource "aws_iam_role" "ebs_csi_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/Amazon_EBS_CSI_DriverPolicy"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   role       = aws_iam_role.ebs_csi_role.name
 }
 
